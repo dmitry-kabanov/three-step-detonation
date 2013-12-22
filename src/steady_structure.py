@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import ode
 from scipy import optimize as sciopt
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 def func_mcj(x):
     ms_squared = ((GAMMA - 1.0) * x**2 + 2.0) / \
@@ -44,33 +45,42 @@ EPSB = 1.0 / 8.0
 ONE_OVER_EPSI = 20.0
 ONE_OVER_EPSB = 8.0
 TI = 3.0
+TBLIST = [0.8]
+#TBLIST = [0.8, 0.85, 0.9, 0.95]
 TBLIST = [0.8, 0.85, 0.9, 0.95]
-
-#x = np.linspace(0.50, 0.545, 100000)
-#f = func_mcj(x[:])
-#print(f[0:5])
-#print(f[-5:-1])
-#plt.plot(x, f)
-#plt.show()
-#MCJ = sciopt.bisect(func_mcj, 0.78, 0.81)
-#print("MCJ = ", MCJ)
-MCJ = 1.445
-Mambient_squared = OVERDRIVE * MCJ**2
-MS_SQUARED = ((GAMMA - 1.0) * Mambient_squared + 2.0) / \
-    (2.0 * GAMMA * Mambient_squared - (GAMMA - 1.0))
-MS = np.sqrt(MS_SQUARED)
-A = (GAMMA * MS_SQUARED + 1.0) / (GAMMA + 1.0)
-B = (MS_SQUARED * 2.0 * GAMMA * (GAMMA - 1.0)) / \
-    ((1.0 - A)**2 * (GAMMA + 1.0))
 
 f0 = 1.0
 y0 = 0.0
 
 RB = 15.0
-N = 100000
+N = 500000
 ics = np.array([f0, y0])
 x = np.linspace(0, RB, N)
 soln = []
+markerStyles = ['sk', 'ok', 'Dk', '^k']
+markerIdxForF = [6000, 11500, 23000, 55000]
+markerIdxForY = [10000, 17000, 33000, 70000]
+
+#lboundary = 0.4
+#rboundary = 0.5484858816226549
+##0.54542578792120033
+#x = np.linspace(lboundary, rboundary, 10000)
+#f = func_mcj(x[:])
+#print(f[0:5])
+#print(f[-5:-1])
+#plt.plot(x, f)
+##plt.show()
+##MCJ = sciopt.newton(func_mcj, 0.54)
+##print("MCJ = ", MCJ)
+MCJ = 2.2415942168486818
+MAMBIENT_SQUARED = OVERDRIVE * MCJ**2
+MS_SQUARED = ((GAMMA - 1.0) * MAMBIENT_SQUARED + 2.0) / \
+    (2.0 * GAMMA * MAMBIENT_SQUARED - (GAMMA - 1.0))
+MS = np.sqrt(MS_SQUARED)
+A = (GAMMA * MS_SQUARED + 1.0) / (GAMMA + 1.0)
+B = (MS_SQUARED * 2.0 * GAMMA * (GAMMA - 1.0)) / \
+    ((1.0 - A)**2.0 * (GAMMA + 1.0))
+
 for j in range(len(TBLIST)):
     tb = TBLIST[j]
     cursoln = np.zeros((N, 2))
@@ -85,14 +95,18 @@ for j in range(len(TBLIST)):
         cursoln[i, :] = integrator.y
 
 plt.figure()
-plt.plot(x, soln[0][:, 0])
-plt.plot(x, soln[0][:, 1])
-plt.plot(x, soln[1][:, 0])
-plt.plot(x, soln[1][:, 1])
-plt.plot(x, soln[2][:, 0])
-plt.plot(x, soln[2][:, 1])
-plt.plot(x, soln[3][:, 0])
-plt.plot(x, soln[3][:, 1])
-plt.xlabel('x')
-plt.ylabel('y')
-plt.show()
+for i in range(len(TBLIST)):
+    plt.plot(x, soln[i][:, 0], '-k')
+    plt.plot(x, soln[i][:, 1], '--k')
+    plt.plot(x[markerIdxForF[i]], soln[i][markerIdxForF[i], 0], markerStyles[i])
+    plt.plot(x[markerIdxForY[i]], soln[i][markerIdxForY[i], 1], markerStyles[i])
+plt.xlabel(r'$x$')
+plt.ylabel(r'$f,y$')
+plt.xlim([0, RB])
+plt.ylim([0.0, 1.0])
+plt.xticks(range(0, 16, 5))
+ax = plt.gca()
+minorLocator = MultipleLocator(1)
+ax.xaxis.set_minor_locator(minorLocator)
+#plt.show()
+plt.savefig('images/steady_structure.eps')
