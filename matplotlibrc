@@ -11,7 +11,7 @@ font.family: serif
 font.serif: Computer Modern Roman
 font.size: 11.0
 
-figure.figsize: 3.93701, 2.95275590551181
+figure.figsize: 3.149608, 1.946564795238579
 
 savefig.format: eps
 savefig.bbox: tight
