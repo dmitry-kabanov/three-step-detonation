@@ -2,7 +2,8 @@ import numpy as np
 from scipy.integrate import ode
 from scipy import optimize as sciopt
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator, FormatStrFormatter
+from matplotlib.ticker import MultipleLocator
+
 
 def func_mcj(x):
     ms_squared = ((GAMMA - 1.0) * x**2 + 2.0) / \
@@ -11,12 +12,13 @@ def func_mcj(x):
 
     a = (GAMMA * ms_squared + 1.0) / (GAMMA + 1.0)
     b = (ms_squared * 2.0 * GAMMA * (GAMMA - 1.0)) / \
-        ((1.0 - a)**2  * (GAMMA + 1.0))
+        ((1.0 - a)**2 * (GAMMA + 1.0))
     p = a + (1.0 - a) * np.sqrt(1.0 - b * Q)
     u = (1.0 - p) / (GAMMA * ms) + ms
     rho = ms / u
 
     return u - np.sqrt(p / rho)
+
 
 def deriv(x, y):
     q = Q * (1.0 - y[0] - y[1])
@@ -46,20 +48,19 @@ ONE_OVER_EPSI = 20.0
 ONE_OVER_EPSB = 8.0
 TI = 3.0
 TBLIST = [0.8]
-#TBLIST = [0.8, 0.85, 0.9, 0.95]
 TBLIST = [0.8, 0.85, 0.9, 0.95]
 
 f0 = 1.0
 y0 = 0.0
 
 RB = 15.0
-N = 500000
+N = 100000
 ics = np.array([f0, y0])
 x = np.linspace(0, RB, N)
 soln = []
 markerStyles = ['sk', 'ok', 'Dk', '^k']
-markerIdxForF = [6000, 11500, 23000, 55000]
-markerIdxForY = [10000, 17000, 33000, 70000]
+markersForF = [6000, 11500, 23000, 55000]
+markersForY = [10000, 17000, 33000, 70000]
 
 #lboundary = 0.4
 #rboundary = 0.5484858816226549
@@ -98,14 +99,15 @@ plt.figure()
 for i in range(len(TBLIST)):
     plt.plot(x, soln[i][:, 0], '-k')
     plt.plot(x, soln[i][:, 1], '--k')
-    plt.plot(x[markerIdxForF[i]], soln[i][markerIdxForF[i], 0], markerStyles[i])
-    plt.plot(x[markerIdxForY[i]], soln[i][markerIdxForY[i], 1], markerStyles[i])
+    plt.plot(x[markersForF[i]], soln[i][markersForF[i], 0], markerStyles[i])
+    plt.plot(x[markersForY[i]], soln[i][markersForY[i], 1], markerStyles[i])
 plt.xlabel(r'$x$')
 plt.ylabel(r'$f,y$')
 plt.xlim([0, RB])
 plt.ylim([0.0, 1.0])
 plt.xticks(range(0, 16, 5))
 ax = plt.gca()
+minorLocator = MultipleLocator(1)
 minorLocator = MultipleLocator(1)
 ax.xaxis.set_minor_locator(minorLocator)
 #plt.show()
