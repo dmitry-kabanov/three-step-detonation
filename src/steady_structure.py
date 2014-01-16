@@ -31,7 +31,7 @@ def deriv(x, y):
     rho = MS / u
     T = p / rho
     ri = y[0] * np.exp(ONE_OVER_EPSI * (1.0 / TI - 1.0 / T))
-    rb = y[0] * y[1] * np.exp(ONE_OVER_EPSB * (1.0 / tb - 1.0 / T))
+    rb = rho * y[0] * y[1] * np.exp(ONE_OVER_EPSB * (1.0 / tb - 1.0 / T))
     rc = y[1]
     return np.array([-(ri + rb) / u, (ri + rb - rc) / u])
 
