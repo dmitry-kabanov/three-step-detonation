@@ -3,6 +3,7 @@ from scipy.integrate import ode
 from scipy import optimize as sciopt
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
+import time
 
 
 def func_mcj(x):
@@ -111,4 +112,5 @@ minorLocator = MultipleLocator(1)
 minorLocator = MultipleLocator(1)
 ax.xaxis.set_minor_locator(minorLocator)
 #plt.show()
-plt.savefig('images/steady_structure.eps')
+timestr = time.strftime("-%Y-%m-%dT%H%M")
+plt.savefig('images/steady_structure' + timestr + '.eps')
