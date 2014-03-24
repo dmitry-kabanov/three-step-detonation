@@ -49,7 +49,7 @@ ONE_OVER_EPSI = 20.0
 ONE_OVER_EPSB = 8.0
 TI = 3.0
 TBLIST = [0.8]
-TBLIST = [0.8, 0.85, 0.9, 0.95]
+TBLIST = [0.8, 0.9, 0.95]
 
 f0 = 1.0
 y0 = 0.0
@@ -60,8 +60,8 @@ ics = np.array([f0, y0])
 x = np.linspace(0, RB, N)
 soln = []
 markerStyles = ['sk', 'ok', 'Dk', '^k']
-markersForF = [6000, 11500, 23000, 50000]
-markersForY = [10000, 17000, 33000, 69000]
+markersForF = [6000, 23000, 50000]
+markersForY = [10000, 33000, 69000]
 
 #lboundary = 0.4
 #rboundary = 0.5484858816226549
