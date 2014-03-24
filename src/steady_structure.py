@@ -103,7 +103,7 @@ for i in range(len(TBLIST)):
     plt.plot(x[markersForF[i]], soln[i][markersForF[i], 0], markerStyles[i])
     plt.plot(x[markersForY[i]], soln[i][markersForY[i], 1], markerStyles[i])
 plt.xlabel(r'$x$')
-plt.ylabel(r'$f,y$')
+plt.ylabel(r'$f_1,f_2$')
 plt.xlim([0, RB])
 plt.ylim([0.0, 1.0])
 plt.xticks(range(0, 16, 5))
