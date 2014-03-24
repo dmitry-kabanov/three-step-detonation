@@ -1,6 +1,6 @@
 text.usetex: True
 
-lines.markersize: 3
+lines.markersize: 5
 
 axes.labelsize: 11
 legend.fontsize: 11
